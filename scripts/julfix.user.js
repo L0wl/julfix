@@ -15,7 +15,7 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     function addButton() {
@@ -80,8 +80,8 @@
                             console.log(`Collected file: ${relativePath} | ${code.length}`);
                             zip.file(relativePath, code);
                             filesAdded++;
-                        } 
-                    } 
+                        }
+                    }
                 }
             } catch {
             }
@@ -94,7 +94,7 @@
         console.log(`Collect stage finished. Collected ${filesAdded} files.`);
 
         try {
-            const content = await zip.generateAsync({type: "blob"});
+            const content = await zip.generateAsync({ type: "blob" });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(content);
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
@@ -109,7 +109,7 @@
     }
 
     function tryAddButtonWhenReady() {
-        const maxCheckingAttempts = 60; 
+        const maxCheckingAttempts = 60;
         const checkingInterval = 500;
         let attempts = 0;
 

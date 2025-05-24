@@ -1,9 +1,10 @@
-# JULFIX
+# JULES FIX
 
 A simple user script that allows you to download code from jules.google.com if task publishing on GitHub stucks for a long time.
 
 <p align="center" width="100%">
    <img width="80%" src="assets/example_stuck.png">
+   <p align="center">Publishing stucks example</p>
 </p>
 
 ## 🧰 Features
@@ -26,6 +27,7 @@ A simple user script that allows you to download code from jules.google.com if t
 
 <p align="center" width="100%">
    <img width="80%" src="assets/example_flow.png">
+   <p align="center">Download flow example</p>
 </p>
 
 ## ⚙️ How It Works

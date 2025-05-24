@@ -7,33 +7,33 @@ A simple user script that allows you to download code from jules.google.com if t
 </p>
 
 ## 🧰 Features
-- [x] One-click download of all modified files as ZIP archive
-- [x] Automatically collects all open files from editor
-- [x] Timestamped filenames for version control
-- [x] No external dependencies beyond Tampermonkey
-- [x] Automatic updates via GitHub
+- ✅ One-click download of all modified files as ZIP archive
+- 📁 Automatically collects all open files from Monaco Editor
+- 🕒 Timestamped filenames for version control
+- 🔌 No external dependencies beyond Tampermonkey
+- 🔄 Automatic updates via GitHub
 
 ## 🛠️ Installation
-1. Install [Tampermonkey](https://www.tampermonkey.net/) extension for your browser
-2. Install [Script](https://github.com/L0wl/julfix/raw/refs/heads/master/scripts/julfix.user.js) or [Minimal](https://github.com/L0wl/julfix/raw/refs/heads/master/scripts/julfix.user.min.js)
-3. Click "Install" in Tampermonkey dialog
+- Install [Tampermonkey](https://www.tampermonkey.net/) extension for your browser
+- Install [Script](https://github.com/L0wl/julfix/raw/refs/heads/master/scripts/julfix.user.js) or [Minimal](https://github.com/L0wl/julfix/raw/refs/heads/master/scripts/julfix.user.min.js)
+- Click "Install" in Tampermonkey dialog
 
 ## 📦 Usage
-1. Open any task at [jules.google.com](https://jules.google.com)
-2. Wait for interface to fully load (Monaco Editor initialization)
-3. Click the green "Download ZIP" button in bottom-right corner
-4. Your browser will download a ZIP archive containing:
+- Open any task at [jules.google.com](https://jules.google.com)
+- Wait for interface to fully load (Monaco Editor initialization)
+- Click the green "Download ZIP" button in bottom-right corner
+- Your browser will download a ZIP archive containing:
 
 <p align="center" width="100%">
    <img width="80%" src="assets/example_flow.png">
 </p>
 
 ## ⚙️ How It Works
-1. Injects a download button into the page
-2. Uses Monaco Editor API to access open files
-3. Filters out temporary/cumulative files
-4. Packages files using JSZip library
-5. Creates a downloadable ZIP blob with timestamp
+- Injects a download button into the page
+- Uses Monaco Editor API to access open files
+- Filters out temporary/cumulative files
+- Packages files using JSZip library
+- Creates a downloadable ZIP blob with timestamp
 
 ## 📋 Requirements
 - 🙈 Tampermonkey extension

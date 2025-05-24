@@ -7,11 +7,11 @@ A simple user script that allows you to download code from jules.google.com if t
 </p>
 
 ## 🧰 Features
-- ✅ **One-click download** of all modified files as ZIP archive
-- 📁 Automatically collects all open files from editor
-- 🕒 Timestamped filenames for version control
-- 🔌 No external dependencies beyond Tampermonkey
-- 🔄 Automatic updates via GitHub
+- [x] One-click download of all modified files as ZIP archive
+- [x] Automatically collects all open files from editor
+- [x] Timestamped filenames for version control
+- [x] No external dependencies beyond Tampermonkey
+- [x] Automatic updates via GitHub
 
 ## 🛠️ Installation
 1. Install [Tampermonkey](https://www.tampermonkey.net/) extension for your browser
@@ -36,14 +36,12 @@ A simple user script that allows you to download code from jules.google.com if t
 5. Creates a downloadable ZIP blob with timestamp
 
 ## 📋 Requirements
-- ✅ Tampermonkey extension
-- 🌐 Modern browser with ES6 support
-- 📡 Internet connection for JSZip dependency
-- 🧠 Monaco Editor and JSZip libraries (loaded automatically)
+- 🙈 Tampermonkey extension
+- 🌏 Modern browser with ES6 support
 
 ## 💬 Support
-- 🐛 [Report issues](https://github.com/L0wl/julfix/issues )
-- 🧠 [GitHub Repository](https://github.com/L0wl/julfix )
+- 🐛 [Report issues](https://github.com/L0wl/julfix/issues)
+- 🧠 [GitHub Repository](https://github.com/L0wl/julfix)
 - 📢 Feature requests are welcome!
 
 > [!NOTE]

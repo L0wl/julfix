@@ -1,0 +1,14 @@
+// ==UserScript==
+// @name         JULFIX-MIN
+// @namespace    https://github.com/L0wl/JULFIX
+// @version      0.0.1
+// @description  Fix repo downloading issues, just by one click
+// @author       L0wl
+// @match        https://jules.google.com/task/*
+// @icon         https://www.gstatic.com/labs-code/code-app/favicon-32x32.png
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
+// @grant        none
+// @run-at       document-end
+// ==/UserScript==
+
+!function(){"use strict";function e(){const e="undefined"!=typeof monaco&&"undefined"!=typeof monaco.editor,o="undefined"!=typeof JSZip;return e&&o}function o(e){return e&&e.modified&&"function"==typeof e.modified.isDisposed&&!e.modified.isDisposed()}async function t(){if(!e())return void console.log("Unable to start downloading process...\nReload page or wait for it fully interface load");console.log("Collecting all source files");const t=new JSZip,i=monaco.editor.getDiffEditors();let n=0;const d=/^\/modified\/\d+\/\d+\//;for(let e=0;e<i.length;e++){const l=i[e];try{const e=l.getModel();if(e&&e.modified&&o(e)){const o=e.modified.getValue(),i=e.modified.uri;if(i&&i.path){let e=i.path.replace(d,"");if(e.startsWith("/")&&(e=e.substring(1)),e.startsWith("modified/cumulative/"))continue;e&&(console.log(`Collected file: ${e} | ${o.length}`),t.file(e,o),n++)}}}catch{}}if(0!==n){console.log(`Collect stage finished. Collected ${n} files.`);try{const e=await t.generateAsync({type:"blob"}),o=document.createElement("a");o.href=URL.createObjectURL(e);const i=(new Date).toISOString().replace(/[:.]/g,"-").slice(0,19);o.download=`jules_modified_code_${i}.zip`,document.body.appendChild(o),o.click(),document.body.removeChild(o),URL.revokeObjectURL(o.href)}catch(l){console.error(`Error while generating archive: ${l}`)}}}!function(){let o=0;!function i(){e()?function(){const e=document.createElement("button");e.textContent="Download ZIP",e.style.position="fixed",e.style.bottom="20px",e.style.right="20px",e.style.zIndex="9999",e.style.padding="10px 15px",e.style.backgroundColor="#4CAF50",e.style.color="white",e.style.border="none",e.style.borderRadius="5px",e.style.cursor="pointer",e.style.boxShadow="0 2px 5px rgba(0,0,0,0.2)",e.addEventListener("click",t),document.body.appendChild(e)}():(o++,o<60&&setTimeout(i,500))}()}()}();

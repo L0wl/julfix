@@ -22,8 +22,6 @@ A simple user script that allows you to download code from jules.google.com if t
 2. Install [Script](https://github.com/L0wl/julfix/raw/refs/heads/master/scripts/julfix.user.js) or [Minimal](https://github.com/L0wl/julfix/raw/refs/heads/master/scripts/julfix.user.min.js)
 3. Click "Install" in Tampermonkey dialog
 
-> 🔄 Script will automatically check for updates every 24 hours via GitHub
-
 ---
 
 ## 📦 Usage
@@ -62,4 +60,5 @@ A simple user script that allows you to download code from jules.google.com if t
 
 ---
 
-> Note: This script only works on Google Jules task pages (`https://jules.google.com/task/*`)
+> [!NOTE]
+> This script only works on Google Jules task pages (`https://jules.google.com/task/*`)

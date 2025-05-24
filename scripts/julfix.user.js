@@ -79,7 +79,7 @@
             right: 20px;
             z-index: 9999;
             padding: 10px 15px;
-            background-color:rgba(0, 0, 0, 0.5);
+            background-color: #715cd7;
             color: white;
             border: none;
             border-radius: 5px;

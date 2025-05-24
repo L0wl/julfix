@@ -31,9 +31,10 @@ A simple user script that allows you to download code from jules.google.com if t
 2. Wait for interface to fully load (Monaco Editor initialization)
 3. Click the green "Download ZIP" button in bottom-right corner
 4. Your browser will download a ZIP archive containing:
-   - All modified files
-   - Original directory structure
-   - Timestamped filename (ISO 8601 format)
+
+<p align="center" width="100%">
+   <img width="100%" src="assets/flow_example.png">
+</p>
 
 ---
 

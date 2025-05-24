@@ -3,7 +3,7 @@
 A simple user script that allows you to download code from jules.google.com if task publishing on GitHub stucks for a long time.
 
 <p align="center" width="100%">
-   <img width="100%" src="assets/stuck_example.png">
+   <img width="80%" src="assets/stuck_example.png">
 </p>
 
 ---
@@ -33,7 +33,7 @@ A simple user script that allows you to download code from jules.google.com if t
 4. Your browser will download a ZIP archive containing:
 
 <p align="center" width="100%">
-   <img width="100%" src="assets/flow_example.png">
+   <img width="80%" src="assets/flow_example.png">
 </p>
 
 ---

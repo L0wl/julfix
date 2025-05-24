@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         JULFIX
 // @namespace    https://github.com/L0wl/JULFIX
-// @version      0.0.1
+// @version      0.0.2
 // @description  Fix repo downloading issues, just by one click
 // @author       L0wl
 // @homepageURL  https://github.com/L0wl/julfix
 // @match        https://jules.google.com/task/*
 // @icon         https://www.gstatic.com/labs-code/code-app/favicon-32x32.png
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
-// @updateURL    https://raw.githubusercontent.com/L0wl/julfix/main/julfix.user.js
-// @downloadURL  https://raw.githubusercontent.com/L0wl/julfix/main/julfix.user.js
+// @updateURL    https://github.com/L0wl/julfix/raw/refs/heads/master/scripts/julfix.user.js
+// @downloadURL  https://github.com/L0wl/julfix/raw/refs/heads/master/scripts/julfix.user.js
 // @supportURL   https://github.com/L0wl/julfix/issues
 // @grant        none
 // @run-at       document-idle

@@ -2,7 +2,9 @@
 
 A simple user script that allows you to download code from jules.google.com if task publishing on GitHub stucks for a long time.
 
-<div style="text-align:center"><img src="assets/stuck_example.png"/></div>
+<p align="center" width="100%">
+   <img width="100%" src="assets/stuck_example.png">
+</p>
 
 ---
 

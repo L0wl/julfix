@@ -43,7 +43,6 @@ A simple user script that allows you to download code from jules.google.com if t
 
 ## Support
 - [Report issues](https://github.com/L0wl/julfix/issues)
-- [GitHub Repository](https://github.com/L0wl/julfix)
 - Feature requests are welcome!
 
 > [!NOTE]

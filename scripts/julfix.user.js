@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JULFIX
 // @namespace    https://github.com/L0wl/JULFIX
-// @version      0.0.2
+// @version      0.0.3
 // @description  Fix repo downloading issues, just by one click
 // @author       L0wl
 // @homepageURL  https://github.com/L0wl/julfix
@@ -17,55 +17,48 @@
 // @unwrap
 // ==/UserScript==
 
-(async function () {
+(function () {
     'use strict';
 
+    const pathRegex = /\/(?:u\/\d+\/)?task\/\d+$/;
     let lastPath = location.pathname;
     let button = null;
-    let observer = null;
-    let stateInterval = null;
-    const pathRegex = /^\/task\/\d+$/;
+    let projectName = null;
 
     function isValidTaskPage() {
         return pathRegex.test(location.pathname);
     }
 
-    function patchHistoryAPI() {
-        const origPushState = history.pushState;
-        const origReplaceState = history.replaceState;
-
-        function handleChange() {
-            if (location.pathname !== lastPath) {
-                lastPath = location.pathname;
-                onPageChange();
-            }
-        }
-
-        history.pushState = function (...args) {
-            origPushState.apply(this, args);
-            handleChange();
-        };
-
-        history.replaceState = function (...args) {
-            origReplaceState.apply(this, args);
-            handleChange();
-        };
-
-        window.addEventListener('popstate', handleChange);
-    }
-
-    function areDependenciesReady() {
+    function isMonacoReady() {
         return typeof monaco !== 'undefined' &&
                typeof monaco.editor !== 'undefined' &&
-               typeof JSZip !== 'undefined';
+               typeof monaco.editor.getDiffEditors === 'function';
     }
 
-    function getAvailableTabsCount() {
-        try {
-            return monaco.editor.getDiffEditors().length;
-        } catch {
-            return 0;
-        }
+    function waitForMonacoToRender(callback, timeout = 15000) {
+        const startTime = Date.now();
+
+        const observer = new MutationObserver(() => {
+            const ready = (
+                    document.querySelector('.content-body') &&
+                    document.querySelector('.code-panel') &&
+                    document.querySelector('.monaco-diff-editor') &&
+                    document.querySelector('.monaco-diff-editor') && 
+                    document.querySelector('.source-text-repo') &&
+                    document.querySelector('.source-text-org') &&
+                    monaco?.editor?.getDiffEditors?.().length > 0
+                );
+            if (ready) {
+                observer.disconnect();
+                projectName = document.querySelector('.source-text-repo')?.textContent;
+                callback();
+            } else if (Date.now() - startTime > timeout) {
+                observer.disconnect();
+                projectName = null;
+            }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 
     function injectButton() {
@@ -78,15 +71,20 @@
             bottom: 20px;
             right: 20px;
             z-index: 9999;
-            padding: 10px 15px;
-            background-color: #715cd7;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            padding: 8px 13px;
+            background-color: #28252b;
+            font-size: 1rem;
+            font-weight: 400;
+            font-family: "Google Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            color: #e6e1ff;
+            border: 1px solid #3a353f;
+            border-radius: 6px;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         `;
-        button.addEventListener('click', async function () { downloadTaskCode(); });
+        button.addEventListener('click', async function () {
+            await downloadTaskCode();
+        });
+        
         document.body.appendChild(button);
     }
 
@@ -122,56 +120,52 @@
         }
 
         if (added === 0) return;
-
         const blob = await zip.generateAsync({ type: 'blob' });
         const link = document.createElement('a');
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
         link.href = URL.createObjectURL(blob);
-        link.download = `jules_modified_code_${timestamp}.zip`;
+        link.download = (projectName !== null) ? (`${projectName}_${timestamp}.zip`) : (`jules_sources_${timestamp}.zip`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
     }
 
-    function startReactiveWatcher() {
-        if (stateInterval) clearInterval(stateInterval);
-        if (observer) observer.disconnect();
-
-        stateInterval = setInterval(() => {
-            if (!isValidTaskPage()) {
-                removeButton();
-                return;
-            }
-
-            if (areDependenciesReady() && getAvailableTabsCount() > 0) {
-                injectButton();
-            } else {
-                removeButton();
-            }
-        }, 750);
-
-        observer = new MutationObserver(() => {
-            if (!isValidTaskPage()) {
-                removeButton();
-            }
-        });
-
-        observer.observe(document.body, { childList: true, subtree: false });
-    }
-
-    function stopReactiveWatcher() {
-        if (stateInterval) clearInterval(stateInterval);
-        if (observer) observer.disconnect();
-        removeButton();
-    }
-
     function onPageChange() {
-        stopReactiveWatcher();
+        removeButton();
+        if (!isValidTaskPage()) return;
+        const waitForMonacoOrGiveUp = setInterval(() => {
+            if (isMonacoReady()) {
+                clearInterval(waitForMonacoOrGiveUp);
+                waitForMonacoToRender(() => {
+                    injectButton();
+                });
+            }
+        }, 500);
+    }
 
-        if (isValidTaskPage()) {
-            startReactiveWatcher();
+    function patchHistoryAPI() {
+        const origPushState = history.pushState;
+        const origReplaceState = history.replaceState;
+
+        function handleChange() {
+            if (location.pathname !== lastPath) {
+                lastPath = location.pathname;
+                onPageChange();
+            }
         }
+
+        history.pushState = function (...args) {
+            origPushState.apply(this, args);
+            handleChange();
+        };
+
+        history.replaceState = function (...args) {
+            origReplaceState.apply(this, args);
+            handleChange();
+        };
+
+        window.addEventListener('popstate', handleChange);
     }
 
     patchHistoryAPI();

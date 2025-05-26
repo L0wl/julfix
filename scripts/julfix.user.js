@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JULFIX
 // @namespace    https://github.com/L0wl/JULFIX
-// @version      0.0.3
+// @version      0.0.4
 // @description  Fix repo downloading issues, just by one click
 // @author       L0wl
 // @homepageURL  https://github.com/L0wl/julfix
@@ -24,15 +24,22 @@
     let lastPath = location.pathname;
     let button = null;
     let projectName = null;
+    const buttonText = 'Download';
+    const conatinerClass = '.panel-button-right-container';
+    const sourceButtonClass = '.nav-button';
 
     function isValidTaskPage() {
-        return pathRegex.test(location.pathname);
+        const regexValid = pathRegex.test(location.pathname);
+        return regexValid;
     }
 
     function isMonacoReady() {
-        return typeof monaco !== 'undefined' &&
-               typeof monaco.editor !== 'undefined' &&
-               typeof monaco.editor.getDiffEditors === 'function';
+        const ready = (
+            typeof monaco !== 'undefined' &&
+            typeof monaco.editor !== 'undefined' &&
+            typeof monaco.editor.getDiffEditors === 'function'
+        );
+        return ready;
     }
 
     function waitForMonacoToRender(callback, timeout = 15000) {
@@ -40,14 +47,13 @@
 
         const observer = new MutationObserver(() => {
             const ready = (
-                    document.querySelector('.content-body') &&
-                    document.querySelector('.code-panel') &&
-                    document.querySelector('.monaco-diff-editor') &&
-                    document.querySelector('.monaco-diff-editor') && 
-                    document.querySelector('.source-text-repo') &&
-                    document.querySelector('.source-text-org') &&
-                    monaco?.editor?.getDiffEditors?.().length > 0
-                );
+                document.querySelector('.content-body') !== null &&
+                document.querySelector('.code-panel') !== null &&
+                document.querySelector('.monaco-diff-editor') !== null &&
+                document.querySelector('.source-text-repo') !== null &&
+                document.querySelector('.source-text-org') !== null &&
+                monaco?.editor?.getDiffEditors?.().length > 0
+            );
             if (ready) {
                 observer.disconnect();
                 projectName = document.querySelector('.source-text-repo')?.textContent;
@@ -63,29 +69,47 @@
 
     function injectButton() {
         if (button) return;
-
+        const panelContainer = document.querySelector(conatinerClass);
+        const sourceButton = panelContainer?.querySelector(sourceButtonClass);
+        
+        let appendElementContainer = null;
         button = document.createElement('button');
-        button.textContent = 'Download ZIP';
-        button.style = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            padding: 8px 13px;
-            background-color: #28252b;
-            font-size: 1rem;
-            font-weight: 400;
-            font-family: "Google Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            color: #e6e1ff;
-            border: 1px solid #3a353f;
-            border-radius: 6px;
-            cursor: pointer;
-        `;
+
+        if (panelContainer && sourceButton) {
+            appendElementContainer = panelContainer;
+            Array.from(sourceButton.attributes).forEach(attr => {
+                button.setAttribute(attr.name, attr.value);
+            });
+            button.className = sourceButton.className;
+            const span = document.createElement('span');
+            span.textContent = buttonText;
+            button.appendChild(span);
+        } else {
+            appendElementContainer = document.body;
+            button.textContent = buttonText;
+            button.style = `
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        z-index: 9999;
+                        padding: 8px 13px;
+                        background-color: #28252b;
+                        font-size: 1rem;
+                        display: flex;
+                        font-weight: 400;
+                        font-family: "Google Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                        color: #e6e1ff;
+                        border: 1px solid #3a353f;
+                        border-radius: 6px;
+                        cursor: pointer;
+                    `;
+        }
+
         button.addEventListener('click', async function () {
             await downloadTaskCode();
         });
-        
-        document.body.appendChild(button);
+
+        appendElementContainer.appendChild(button);
     }
 
     function removeButton() {
@@ -116,7 +140,7 @@
                         added++;
                     }
                 }
-            } catch {}
+            } catch { }
         }
 
         if (added === 0) return;
@@ -141,7 +165,7 @@
                     injectButton();
                 });
             }
-        }, 500);
+        }, 5000);
     }
 
     function patchHistoryAPI() {

@@ -13,6 +13,7 @@ A simple user script that allows you to download code from jules if task publish
 - [x] Timestamped filenames for version control
 - [x] No external dependencies beyond Tampermonkey
 - [x] Automatic updates via GitHub
+- [x] Hide diff viewer ability
 
 ## Installation
 - Install [Tampermonkey](https://www.tampermonkey.net/) extension for your browser
